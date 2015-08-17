@@ -3,5 +3,6 @@
         <file>main.qml</file>
         <file>resources/folder.png</file>
         <file>Polaroid.qml</file>
+        <file>Tweet.qml</file>
     </qresource>
 </RCC>

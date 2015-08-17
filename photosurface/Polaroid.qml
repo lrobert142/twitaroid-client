@@ -1,12 +1,9 @@
 import QtQuick 2.5
-import QtQuick.Dialogs 1.0
-import QtQuick.Window 2.1
-import QtWebSockets 1.0
 
 Rectangle {
     id: photoFrame
     width: image.width * (1 + 0.10 * image.height / image.width)
-    height: image.height * 1.2
+    height: (image.height + tweet.height) * 1.2
     scale: defaultSize / Math.max(image.sourceSize.width, image.sourceSize.height)
     Behavior on scale { NumberAnimation { duration: 200 } }
     Behavior on x { NumberAnimation { duration: 200 } }
@@ -20,29 +17,30 @@ Rectangle {
         y = Math.random() * root.height - height / 2
         rotation = Math.random() * 13 - 6
     }
+
     Image {
         id: image
-        anchors.centerIn: parent
+        anchors {
+            top: parent.top
+            topMargin: parent.height / 15
+            horizontalCenter: parent.horizontalCenter
+        }
+
         fillMode: Image.PreserveAspectFit
         source: model.image_url
         antialiasing: true
     }
-    Text {
-        id: tweetText
-        text: {
-            var delimiter = "#twitaroid_dev";
-            var bodyText = model.body;
-            var endIndex = bodyText.lastIndexOf(delimiter) + delimiter.length;
-            bodyText.substring(0, endIndex);
-        }
+
+    Tweet {
+        id: tweet
         anchors {
-            bottom: parent.bottom
+            top: image.bottom
+            topMargin: 10
             left: parent.left
-            bottomMargin: 5
             leftMargin: 10
+            right: parent.right
+            rightMargin: 10
         }
-        font.pointSize: 10
-        wrapMode: Text.WordWrap
     }
 
     PinchArea {

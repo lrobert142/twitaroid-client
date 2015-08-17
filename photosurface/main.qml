@@ -38,7 +38,6 @@
 **
 ****************************************************************************/
 import QtQuick 2.5
-import QtQuick.Dialogs 1.0
 import QtQuick.Window 2.1
 import QtWebSockets 1.0
 

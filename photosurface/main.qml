@@ -53,7 +53,6 @@ Window {
     property real surfaceViewportRatio: 1.5
 
     Component.onCompleted: {
-        console.log("READY!");
         var http = new XMLHttpRequest();
         var url = "http://127.0.0.1:8080/init";
         http.open("GET", url, true);
@@ -121,6 +120,17 @@ Window {
                     source: model.image_url
                     antialiasing: true
                 }
+                Text {
+                    id: tweetText
+                    text: model.body
+                    anchors.bottom: parent.bottom
+                    anchors.left: parent.left
+                    anchors.bottomMargin: 5
+                    anchors.leftMargin: 20
+                    font.pointSize: 12
+                    wrapMode: Text.WordWrap
+                }
+
                 PinchArea {
                     anchors.fill: parent
                     pinch.target: photoFrame

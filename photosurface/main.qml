@@ -99,7 +99,7 @@ Window {
             Rectangle {
                 id: photoFrame
                 width: image.width * (1 + 0.10 * image.height / image.width)
-                height: image.height * 1.10
+                height: image.height * 1.2
                 scale: defaultSize / Math.max(image.sourceSize.width, image.sourceSize.height)
                 Behavior on scale { NumberAnimation { duration: 200 } }
                 Behavior on x { NumberAnimation { duration: 200 } }
@@ -122,12 +122,19 @@ Window {
                 }
                 Text {
                     id: tweetText
-                    text: model.body
-                    anchors.bottom: parent.bottom
-                    anchors.left: parent.left
-                    anchors.bottomMargin: 5
-                    anchors.leftMargin: 20
-                    font.pointSize: 12
+                    text: {
+                        var delimiter = "#twitaroid_dev";
+                        var bodyText = model.body;
+                        var endIndex = bodyText.lastIndexOf(delimiter) + delimiter.length;
+                        bodyText.substring(0, endIndex);
+                    }
+                    anchors {
+                        bottom: parent.bottom
+                        left: parent.left
+                        bottomMargin: 5
+                        leftMargin: 10
+                    }
+                    font.pointSize: 10
                     wrapMode: Text.WordWrap
                 }
 

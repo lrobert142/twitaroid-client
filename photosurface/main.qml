@@ -52,6 +52,28 @@ Window {
     property var currentFrame: undefined
     property real surfaceViewportRatio: 1.5
 
+    Component.onCompleted: {
+        console.log("READY!");
+        var http = new XMLHttpRequest();
+        var url = "http://127.0.0.1:8080/init";
+        http.open("GET", url, true);
+        http.onreadystatechange = function() {
+            if(http.readyState == 4) {
+                if(http.status == 200) {
+                    var responseJsonArray = JSON.parse(http.responseText);
+                    responseJsonArray.forEach(function(entry) {
+                        imagesModel.append(entry);
+                    });
+                } else {
+                    console.log("Error: " + http.status + " " + http.statusText);
+                    console.log("Response: " + http.responseText);
+                }
+            }
+        }
+
+        http.send();
+    }
+
     WebSocket {
         id: socket
         url: "ws://127.0.0.1:8081/chat"
@@ -96,7 +118,7 @@ Window {
                     id: image
                     anchors.centerIn: parent
                     fillMode: Image.PreserveAspectFit
-                    source: model.image_url //FIXME Doesn't work...
+                    source: model.image_url
                     antialiasing: true
                 }
                 PinchArea {

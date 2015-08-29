@@ -51,9 +51,34 @@ Window {
     property var currentFrame: undefined
     property real surfaceViewportRatio: 1.5
 
-    Component.onCompleted: {
+    property string addressRequestUrl: "http://axrs.io/_services/twitaroid.json"
+    property string polaroidInitUrl: ""
+    property string webSocketUrl: ""
+
+    function init(callback) {
         var http = new XMLHttpRequest();
-        var url = "http://127.0.0.1:8080/init";
+        var url = addressRequestUrl;
+        http.open("GET", url, true);
+        http.onreadystatechange = function() {
+            if(http.readyState == 4) {
+                if(http.status == 200) {
+                    var responseJson = JSON.parse(http.responseText);
+                    polaroidInitUrl = "http://" + responseJson.ip + "/init";
+                    webSocketUrl = "ws://" + responseJson.socket + "/chat";
+                    callback();
+                } else {
+                    console.log("Error: " + http.status + " " + http.statusText);
+                    console.log("Response: " + http.responseText);
+                }
+            }
+        }
+
+        http.send();
+    }
+
+    function fetchPolaroidData() {
+        var http = new XMLHttpRequest();
+        var url = polaroidInitUrl;
         http.open("GET", url, true);
         http.onreadystatechange = function() {
             if(http.readyState == 4) {
@@ -72,9 +97,13 @@ Window {
         http.send();
     }
 
+    Component.onCompleted: {
+        init(fetchPolaroidData);
+    }
+
     WebSocket {
         id: socket
-        url: "ws://127.0.0.1:8081/chat"
+        url: webSocketUrl
         active: true
 
         onTextMessageReceived: {

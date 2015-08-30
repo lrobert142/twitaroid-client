@@ -1,5 +1,6 @@
 import QtQuick 2.5
 
+
 Rectangle {
     height: tweetText.height
 
@@ -34,14 +35,20 @@ Rectangle {
             top: author.bottom
         }
 
-        text: {
-            var delimiter = "#twitaroid_dev";
-            var bodyText = model.body;
-            var endIndex = bodyText.lastIndexOf(delimiter) + delimiter.length;
-            bodyText.substring(0, endIndex);
-        }
+        text: model.body
         font.pointSize: 10
         wrapMode: Text.WordWrap
     }
-}
 
+    Text {
+        id: tweetTime
+        anchors {
+            left: author.right
+            leftMargin: 20
+        }
+
+        text: model.date
+        font.pointSize: 11
+        wrapMode: Text.WordWrap
+    }
+}

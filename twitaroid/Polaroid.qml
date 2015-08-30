@@ -13,10 +13,12 @@ Rectangle {
     smooth: true
     antialiasing: true
     Component.onCompleted: {
-        x = Math.random() * root.width - width / 2
-        y = Math.random() * root.height - height / 2
+        x = Math.random() * root.width - width / 0.5
+        y = Math.random() * root.height - height / 0.5
         rotation = Math.random() * 13 - 6
     }
+
+    visible: (root.filtered && model.body.substring(0,2) === "RT")? false : true;
 
     Image {
         id: image
@@ -46,10 +48,10 @@ Rectangle {
     PinchArea {
         anchors.fill: parent
         pinch.target: photoFrame
-        pinch.minimumRotation: -360
-        pinch.maximumRotation: 360
-        pinch.minimumScale: 0.1
-        pinch.maximumScale: 10
+        pinch.minimumRotation: -360 * 100
+        pinch.maximumRotation: 360 * 100
+        pinch.minimumScale: 0.5
+        pinch.maximumScale: 5
         pinch.dragAxis: Pinch.XAndYAxis
         onPinchStarted: setFrameColor();
         property real zRestore: 0

@@ -13,8 +13,8 @@ Window {
     property real surfaceViewportRatio: 1.5
     property bool filtered: true
 
-    property string resetButtonText: "SHUFFLE"
-    property string resetButtonLoadingText: "Loading..."
+    property string shuffleButtonText: "SHUFFLE"
+    property string shuffleButtonLoadingText: "Loading..."
     property string polaroidInitUrl: "http://localhost:8080/init"
     property string webSocketUrl: "ws://localhost:8080/chat"
 
@@ -29,7 +29,7 @@ Window {
                     responseJsonArray.forEach(function(entry) {
                         tweets.append(entry);
                     });
-                    resetText.text = resetButtonText;
+                    shuffleText.text = shuffleButtonText;
                 } else {
                     console.log("Error: " + http.status + " " + http.statusText);
                     console.log("Response: " + http.responseText);
@@ -56,6 +56,7 @@ Window {
             }
         }
     }
+
     ListModel{
         id:tweets;
     }
@@ -123,9 +124,9 @@ Window {
     }
 
     Rectangle {
-        id: resetButton
+        id: shuffleButton
         height: 40
-        width: resetText.width + 20
+        width: shuffleText.width + 20
         anchors {
             right: parent.right
             top: parent.top
@@ -140,10 +141,10 @@ Window {
         border.width: 2
 
         Text {
-            id: resetText
+            id: shuffleText
             width: 80
-            anchors.fill: resetButton
-            text: resetButtonLoadingText
+            anchors.fill: shuffleButton
+            text: shuffleButtonLoadingText
             anchors.margins: 10
             z: 10001
 
@@ -153,10 +154,10 @@ Window {
 
         MouseArea {
             id: resetArea
-            anchors.fill: resetButton
+            anchors.fill: shuffleButton
             onClicked: {
-                if(resetText.text === resetButtonText) {
-                    resetText.text = resetButtonLoadingText
+                if(shuffleText.text === shuffleButtonText) {
+                    shuffleText.text = shuffleButtonLoadingText
                     tweets.clear();
                     fetchPolaroidData();
                 }
@@ -188,7 +189,7 @@ Window {
         height: 40
         width: retweetFilterText.width + 20
         anchors {
-            right: resetButton.left
+            right: shuffleButton.left
             top: parent.top
             margins: 10
         }

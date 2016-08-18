@@ -15,30 +15,8 @@ Window {
 
     property string resetButtonText: "SHUFFLE"
     property string resetButtonLoadingText: "Loading..."
-    property string addressRequestUrl: "http://axrs.io/_services/twitaroid.json"
-    property string polaroidInitUrl: ""
-    property string webSocketUrl: ""
-
-    function init(callback) {
-        var http = new XMLHttpRequest();
-        var url = addressRequestUrl;
-        http.open("GET", url, true);
-        http.onreadystatechange = function() {
-            if(http.readyState == 4) {
-                if(http.status == 200) {
-                    var responseJson = JSON.parse(http.responseText);
-                    polaroidInitUrl = "http://" + responseJson.ip + "/init";
-                    webSocketUrl = "ws://" + responseJson.socket + "/chat";
-                    callback();
-                } else {
-                    console.log("Error: " + http.status + " " + http.statusText);
-                    console.log("Response: " + http.responseText);
-                }
-            }
-        }
-
-        http.send();
-    }
+    property string polaroidInitUrl: "http://localhost:8080/init"
+    property string webSocketUrl: "ws://localhost:8080/chat"
 
     function fetchPolaroidData() {
         var http = new XMLHttpRequest();
@@ -63,7 +41,7 @@ Window {
     }
 
     Component.onCompleted: {
-        init(fetchPolaroidData);
+        fetchPolaroidData();
     }
 
     WebSocket {
